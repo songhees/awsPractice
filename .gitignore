@@ -1,0 +1,6 @@
+.gradle
+.idea
+application-oauth.properties
+awsProject-1.0-SNAPSHOT.jar
+awsProject-1.0-SNAPSHOT.war
+.class
