@@ -13,7 +13,7 @@ cache:
 
 script: "./gradlew clean build"
 
-defore_deploy:
+before_deploy:
   - zip -r aws-proejct-webservice *
   - mkdir -p deploy
   - mv aws-proejct-webservice.zip deploy/aws-proejct-webservice.zip
