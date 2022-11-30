@@ -18,7 +18,7 @@ defore_deploy:
   - mkdir -p deploy
   - mv aws-proejct-webservice.zip deploy/aws-proejct-webservice.zip
 deploy:
-  -  project: s3
+  -  provider: s3
      access_key_id: $AWS_ACCESS_KEY
      secret_access_key: $AWS_SECRET_KEY
      bucket: aws-project-build
