@@ -13,10 +13,13 @@ cache:
 
 script: "./gradlew clean build"
 
+# CodeDeploy는 jar 파일을 인식하지 못하므로 zip으로 압축해야 한다.
 before_deploy:
   - zip -r aws-proejct-webservice *
   - mkdir -p deploy
   - mv aws-proejct-webservice.zip deploy/aws-proejct-webservice.zip
+
+# S3로 파일 혹은 CodeDeploy로 배포 등 외부 서비스와의 연될 행위들을 선언
 deploy:
   -  provider: s3
      access_key_id: $AWS_ACCESS_KEY
@@ -25,10 +28,20 @@ deploy:
      region: ap-northeast-2
      acl: private
      skip_cleanup: true
-     local_dir: deploy
+     local_dir: deploy # 해당 위치 파일들만 S3로 전송
      wait-until-deployed: true
      on:
        all_branches: true
+  -  provider: codedeploy
+     access_key_id: $AWS_ACCESS_KEY
+     secret_access_key: $AWS_SECRET_KEY
+     bucket: aws-project-build
+     key: aws-proejct-webservice.zip # S3에 저장된 zip이름
+     bundle_type: zip # 압축 확장자
+     application: spring-testservice # 웹 콘솔에서 등록한 codeDeploy 애플리케이션 이름
+     deployment_group: spring-testservice-group # 웹 콘솔에서 등록한 codeDeploy 배포 그룹 이름
+     region: ap-northeast-2
+     wait-until-deployed: true
 
 notifications:
   email:
